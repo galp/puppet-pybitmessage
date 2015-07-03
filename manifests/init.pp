@@ -56,6 +56,7 @@ class pybitmessage(
   
   file  {"/home/${user}/.config/PyBitmessage/keys.dat":
     ensure  => present,
+    content => template("${module_name}/keys_dat.erb"),
     owner   => $user,
     group   => $user,
     require => File["/home/${user}/.config/PyBitmessage/"],
