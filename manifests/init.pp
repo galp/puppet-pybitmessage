@@ -46,12 +46,19 @@ class pybitmessage(
     line     => 'exit 0',
     path     => '/etc/rc.local',
   }
-
-  file  {"/home/${user}/.config/PyBitmessage/keys.dat":
-    ensure  => present,
+  $required_dirs = ["/home/${user}/.config/","/home/${user}/.config/PyBitmessage"]
+  file  { $required_dirs:
+    ensure  => directory,
     recurse => true,
     owner   => $user,
     group   => $user
+  }
+  
+  file  {"/home/${user}/.config/PyBitmessage/keys.dat":
+    ensure  => present,
+    owner   => $user,
+    group   => $user,
+    require => File["/home/${user}/.config/PyBitmessage/"],
   }
   file_line { "${proj_name}_daemon":
     ensure   => present,
