@@ -62,7 +62,7 @@ class pybitmessage(
   }
   file_line { "${proj_name}_daemon":
     ensure   => present,
-    line     => "daemon = $daemon",
+    line     => "daemon = true",
     path     => "/home/${user}/.config/PyBitmessage/keys.dat",
     require  => File["/home/${user}/.config/PyBitmessage/keys.dat"],
   }
