@@ -37,7 +37,7 @@ class pybitmessage(
   # }
   file_line { "${proj_name}_start":
     ensure   => present,
-    line     => "su -c 'python ${$pybitmessage_dir}/src/bitmessagemain.py > ~/bitmessage.log' ${user}",
+    line     => "su -c 'python ${$pybitmessage_dir}/src/bitmessagemain.py > ~/bitmessage.log &' ${user}",
     path     => '/etc/rc.local',
     require  => Vcsrepo[$pybitmessage_dir],
   }
