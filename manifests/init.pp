@@ -10,6 +10,7 @@ class pybitmessage(
 
   package { $packages:
     ensure => installed,
+    require => Class['apt'],
   }
 
   user { $user:
