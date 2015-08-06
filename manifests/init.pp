@@ -3,10 +3,11 @@ class pybitmessage(
   $daemon            = true,
   $proj_name         = 'bitmessage',
   $repo = 'https://github.com/Bitmessage/PyBitmessage',
-  $command           = 'python2.7 bitmessagemain.py',
+
 )
 {
   $dir  = "/home/${user}/pybitmessage"
+  $command           = "python2.7 ${dir}/src/bitmessagemain.py"
   $packages = ['python2.7','git']
 
   package { $packages:
