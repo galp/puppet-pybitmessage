@@ -1,0 +1,10 @@
+{
+    "name": "galp-pybitmessage",
+    "version": "0.0.1",
+    "author": "ag",
+    "license": "MIT",
+    "summary": "a terrible module to install bitmessage",
+    "source": "https://github.com/galp/puppet-pybitmessage",
+    "project_page": "https://github.com/galp/puppet-pybitmessage",
+    "dependencies": []
+}
