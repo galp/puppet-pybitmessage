@@ -1,11 +1,12 @@
 class pybitmessage(
   $user              = 'bitmessage',
   $daemon            = true,
-  $proj_name         = 'pybitmessage',
-  $pybitmessage_repo = 'https://github.com/Bitmessage/PyBitmessage',
+  $proj_name         = 'bitmessage',
+  $repo = 'https://github.com/Bitmessage/PyBitmessage',
+  $command           = 'python2.7 bitmessagemain.py',
 )
 {
-  $pybitmessage_dir  = "/home/${user}/pybitmessage"
+  $dir  = "/home/${user}/pybitmessage"
   $packages = ['python2.7','git']
 
   package { $packages:
@@ -19,35 +20,19 @@ class pybitmessage(
     shell      => '/bin/bash',
   }
 
-  vcsrepo { $pybitmessage_dir:
+  vcsrepo { $dir:
     ensure   => present,
     provider => git,
-    source   => $pybitmessage_repo,
+    source   => $repo,
     require  => User[$user],
   }
-  # service { $proj_name :
-  #   ensure  => running,
-  #   enable  => true,
-  #   require => [File["/etc/systemd/system/${proj_name}.service"],Vcsrepo[$pybitmessage_dir]],
-  # }
-  # file {"/etc/systemd/system/${proj_name}.service" :
-  #   ensure  => present,
-  #   content => template("${module_name}/${proj_name}_service.erb"),
-  #   notify  => Service[ $proj_name ],
-  #   require => Vcsrepo[$pybitmessage_dir],
-  # }
-  file_line { "${proj_name}_start":
-    ensure   => present,
-    line     => "su -c 'python ${$pybitmessage_dir}/src/bitmessagemain.py > ~/bitmessage.log &' ${user}",
-    path     => '/etc/rc.local',
-    require  => Vcsrepo[$pybitmessage_dir],
+  service { $proj_name :
+    ensure  => running,
+    enable  => true,
+    require => [File["/etc/init.d/${proj_name}"],Vcsrepo[$dir]],
   }
-  file_line { "${proj_name}_remove_exit":
-    ensure   => absent,
-    line     => 'exit 0',
-    path     => '/etc/rc.local',
-  }
-  $required_dirs = ["/home/${user}/.config/","/home/${user}/.config/PyBitmessage"]
+
+  $required_dirs = ["/home/${user}/.config/","/home/${user}/.config/PyBitmessage"] #fix
   file  { $required_dirs:
     ensure  => directory,
     recurse => true,
@@ -62,6 +47,12 @@ class pybitmessage(
     group   => $user,
     require => File["/home/${user}/.config/PyBitmessage/"],
   }
+  file  {"/etc/init.d/${proj_name}":
+    ensure  => present,
+    content => template("${module_name}/bitmessage_start_sh.erb"),
+    notify => Service[$proj_name],
+  }
+
   file_line { "${proj_name}_daemon":
     ensure   => present,
     line     => "daemon = true",
