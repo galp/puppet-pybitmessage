@@ -51,7 +51,8 @@ class pybitmessage(
   file  {"/etc/init.d/${proj_name}":
     ensure  => present,
     content => template("${module_name}/bitmessage_start_sh.erb"),
-    notify => Service[$proj_name],
+    mode    => '0744',
+    notify  => Service[$proj_name],
   }
 
   file_line { "${proj_name}_daemon":
