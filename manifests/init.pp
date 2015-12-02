@@ -8,7 +8,7 @@ class pybitmessage(
 {
   $dir  = "/home/${user}/pybitmessage"
   $command           = "python2.7 ${dir}/src/bitmessagemain.py"
-  $packages = ['python2.7','git']
+  $packages = ['python2.7']
 
   package { $packages:
     ensure => installed,
